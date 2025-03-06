@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabela de Assinaturas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://media.discordapp.net/attachments/1299466296043245648/1300841159178063873/04197b1a55cd725ae6075fd4244dda6d.jpg?ex=67224e3c&is=6720fcbc&hm=6baa740d108596e67edc7106976d3af4789bc5ea5e0585362cbb56173e4bf4a8');
+            background-size: cover;
+            background-position: center;
+            color: #e50914;
+            padding: 20px;
+            text-align: center;
+            margin: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: rgba(51, 51, 51, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+        }
+        h1 {
+            margin-bottom: 20px;
+            font-size: 2em;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        th, td {
+            border: 1px solid #444;
+            padding: 12px;
+            text-align: left;
+            color: #e50914;
+        }
+        th {
+            background-color: #e50914;
+            color: white;
+        }
+        tr:hover {
+            background-color: rgba(85, 85, 85, 0.8);
+        }
+        button {
+            background-color: #e50914;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #f61225;
+        }
+        
+        /* Estilo para dispositivos móveis */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            table {
+                font-size: 14px;
+                overflow-x: auto;
+            }
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" role="main">
+        <h1>Tabela de Assinaturas de E-mails</h1>
+        
+        <div>
+            <button onclick="gerarTabela()">Gerar Tabela</button>
+            <button onclick="limparTabela()">Limpar Tabela</button>
+            <button onclick="exibirAlertas()">Exibir Alertas</button>
+            <button onclick="baixarTabela()">Baixar Tabela</button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Senha</th>
+                    <th>Assinatura</th>
+                </tr>
+            </thead>
+            <tbody id="table-body" role="table">
+                <!-- As linhas da tabela serão geradas aqui -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const dados = [
+            { email: "projeto354@com.com", senha: "1234", assinatura: "Premium, 1 Month" },
+            { email: "projetonetflix@com.com", senha: "1234", assinatura: "Premium, 12 Months" },
+            { email: "healthandfitnessfan077@gmail.com", senha: "healthhub077", assinatura: "Premium, 6 Months" },
+            { email: "parentingandfamilyfocus052@outlook.com", senha: "familyfirst052", assinatura: "3 Months" },
+            { email: "foodiefilmfinder040@outlook.com", senha: "culinarycinema040", assinatura: "Premium, 3 Months" },
+            { email: "crimecinemacritic034@outlook.com", senha: "crimeplots034", assinatura: "Premium, 1 Year" },
+            { email: "seriesaddict004@outlook.com", senha: "series4life004", assinatura: "1 Month" },
+            { email: "educationenthusiast044@outlook.com", senha: "learnandgrow044", assinatura: "Premium, 6 Months" },
+            { email: "indieenthusiast018@gmail.com", senha: "indieFilms018", assinatura: "Premium, 12 Months" },
+            { email: "petandanimalpal051@gmail.com", senha: "animalfriends051", assinatura: "1 Month" },
+            { email: "classiccinema019@gmail.com", senha: "oldiesgoldies019", assinatura: "Premium, 3 Months" },
+            { email: "danceanddramadiscoverer068@outlook.com", senha: "dancedrama068", assinatura: "3 Months" },
+            { email: "militaryandwarfarewatcher060@outlook.com", senha: "militarymovies060", assinatura: "Premium, 1 Year" },
+            { email: "historyandheritagehound064@gmail.com", senha: "historyhub064", assinatura: "Premium, 6 Months" },
+            { email: "fashionfilmfollower046@outlook.com", senha: "fashionforward046", assinatura: "Premium, 12 Months" },
+            { email: "horrorhound011@gmail.com", senha: "scareme011", assinatura: "1 Month" },
+            { email: "newsandcurrenteventscatchup056@outlook.com", senha: "newswatch056", assinatura: "Premium, 3 Months" },
+            { email: "scifisage012@gmail.com", senha: "scifilove012", assinatura: "Premium, 1 Year" },
+            { email: "realityrush014@gmail.com", senha: "realworld014", assinatura: "Premium, 6 Months" },
+            { email: "blockbusterbuddy025@gmail.com", senha: "hitmovies025", assinatura: "Premium, 3 Months" },
+            { email: "homemakinganddecorhighlighter050@outlook.com", senha: "homestyle050", assinatura: "1 Month" },
+            { email: "musicandmelodymonitor067@gmail.com", senha: "musicmoments067", assinatura: "Premium, 3 Months" },
+            { email: "foreignfilmfan023@gmail.com", senha: "worldcinema023", assinatura: "Premium, 1 Year" },
+            { email: "wellnessandwellbeingwatcher078@gmail.com", senha: "wellnessworld078", assinatura: "Premium, 6 Months" },
+            { email: "businessandfinancebroadcast055@gmail.com", senha: "moneymatters055", assinatura: "3 Months" },
+        ];
+
+        function gerarTabela() {
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = ""; // Limpa a tabela antes de gerar novamente
+
+            const fragment = document.createDocumentFragment(); // Usado para evitar repinturas desnecessárias
+
+            dados.forEach(dado => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${dado.email}</td>
+                    <td>${dado.senha}</td>
+                    <td>${dado.assinatura}</td>
+                `;
+                fragment.appendChild(row);
+            });
+
+            tableBody.appendChild(fragment); // Adiciona todas as linhas de uma vez
+        }
+
+        function limparTabela() {
+            const tableBody = document.getElementById('table-body');
+            tableBody.innerHTML = ""; // Limpa a tabela
+            alert('Tabela limpa com sucesso!');
+        }
+
+        function exibirAlertas() {
+            if (dados.length === 0) {
+                alert("Nenhum dado disponível para exibir.");
+                return;
+            }
+            dados.forEach(dado => {
+                alert(`Email: ${dado.email}\nSenha: ${dado.senha}\nAssinatura: ${dado.assinatura}`);
+            });
+        }
+
+        function baixarTabela() {
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + dados.map(dado => `${dado.email},${dado.senha},${dado.assinatura}`).join("\n");
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "tabela_assinaturas.csv");
+            document.body.appendChild(link); // Adiciona o link ao corpo do documento
+
+            link.click(); // Simula o clique no link para iniciar o download
+            document.body.removeChild(link); // Remove o link após o download
+        }
+    </script>
+</body>
+</html>
